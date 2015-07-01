@@ -53,15 +53,16 @@ public class Point {
 		this.prey = prey;
 	}
 	
-	public void move() {
-		double dx = prey.getX() - x;
-		double dy = prey.getY() - y;
-		
-		double ny = dy / (Math.sqrt(dx*dx + dy*dy)) + y;
-		double nx = ((ny - y)*dx / dy) + x;
-		
-		x = nx * speed;
-		y = ny * speed;
+	public boolean move() {
+		if(Math.abs(x - prey.getX()) <= 20 && Math.abs(y - prey.getY()) <= 20) {
+			return false;
+		}
+		double vx = prey.getX() - x;
+		double vy = prey.getY() - y;
+		double n = Math.sqrt(vx*vx + vy*vy);
+		x += vx/n * speed;
+		y += vy/n * speed;
+		return true; 
 	}
 
 }
