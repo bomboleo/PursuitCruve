@@ -10,11 +10,11 @@ public class PuirsuitThread extends Observable implements Runnable {
 	private List<Point> points;
 	private boolean running = true;
 	
-	public PuirsuitThread(double[][] points, int size, double speed) {
+	public PuirsuitThread(double[][] points, int size, double speed, boolean linearSpeed) {
 		this.points = new LinkedList<>();
 		Point lastPoint = null;
 		for( int i = 0 ; i < size; i++) {
-			Point p = new Point(points[0][i], points[1][i], speed, lastPoint);
+			Point p = new Point(points[0][i], points[1][i], speed, lastPoint, linearSpeed);
 			this.points.add(p);
 			lastPoint = p;
 		}
@@ -29,10 +29,15 @@ public class PuirsuitThread extends Observable implements Runnable {
 					running = false;
 				}
 			}
-			notifyObservers(points);
+			double[][] pointCoords = new double[points.size()][2];
+			for(int i = 0; i < points.size(); i++) {
+				pointCoords[i][0] = points.get(i).getX();
+				pointCoords[i][1] = points.get(i).getY();
+			}
 			this.setChanged();
+			notifyObservers(pointCoords);
 			try {
-				Thread.sleep(50);
+				Thread.sleep(1000/60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

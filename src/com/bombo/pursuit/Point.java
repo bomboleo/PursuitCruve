@@ -8,17 +8,20 @@ public class Point {
 	private double speed;
 
 	private Point prey;
+	
+	private boolean linearSpeed;
 
 	public Point() {
 		super();
 	}
 
-	public Point(double x, double y, double speed, Point prey) {
+	public Point(double x, double y, double speed, Point prey, boolean linearSpeed) {
 		super();
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
 		this.prey = prey;
+		this.linearSpeed = linearSpeed;
 	}
 
 	public double getX() {
@@ -53,16 +56,28 @@ public class Point {
 		this.prey = prey;
 	}
 	
+	public boolean isLinearSpeed() {
+		return linearSpeed;
+	}
+
+	public void setLinearSpeed(boolean linearSpeed) {
+		this.linearSpeed = linearSpeed;
+	}
+
 	public boolean move() {
-		if(Math.abs(x - prey.getX()) <= 20 && Math.abs(y - prey.getY()) <= 20) {
-			return false;
-		}
+		boolean close = !(Math.abs(x - prey.getX()) <= 7 && Math.abs(y - prey.getY()) <= 7);
 		double vx = prey.getX() - x;
 		double vy = prey.getY() - y;
 		double n = Math.sqrt(vx*vx + vy*vy);
-		x += vx/n * speed;
-		y += vy/n * speed;
-		return true; 
+		if(linearSpeed) {
+			x += vx/n * speed;
+			y += vy/n * speed;
+		} else {
+			x += vx * 1/speed;
+			y += vy * 1/speed;
+			close = true;
+		}
+		return close; 
 	}
 
 }
