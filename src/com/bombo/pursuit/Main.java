@@ -27,7 +27,7 @@ public class Main extends Application implements Observer {
 	public void start(Stage primaryStage) {
 		Parameters parameters = getParameters();
 		List<String> args = parameters.getRaw();
-		int size = 4;
+		int size = 12;
 		if (args.size() > 0) {
 			try {
 				size = Integer.parseInt(args.get(0));
@@ -48,7 +48,7 @@ public class Main extends Application implements Observer {
 		primaryStage.setScene(new Scene(root));
 		primaryStage.show();
 
-		PuirsuitThread pt = new PuirsuitThread(points, size, 64, false);
+		PuirsuitThread pt = new PuirsuitThread(points, size, 16, false);
 		pt.addObserver(this);
 		new Thread(pt).start();
 
